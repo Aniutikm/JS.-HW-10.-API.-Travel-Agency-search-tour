@@ -1,0 +1,93 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital@1&family=PT+Serif:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Gelios Tour</title>
+</head>
+
+<body>
+    <div class="screen">
+        <section>
+            <div class="title">
+                <span class="left-line"></span>
+                Тури зі знижками
+                <span class="right-line"></span>
+            </div>
+            <div class="cross">x x x x</div>
+            <div class="subtitle">Обирайте кращі гарячі тури</div>
+            <div class="search-tours-box"></div>
+        </section>
+    </div>
+    <script>
+        let data;
+        fetch('https://search.tez-tour.com/tariffsearch/references?locale=ua&formatResult=true&xml=false')
+            .then(response => response.json())
+            .then(json => data = json);
+
+
+        const search = document.querySelector('.search-tours-box');
+
+        setTimeout(function () {
+            let dataArr = data.results;
+            dataArr.forEach(function (el) {
+                let html = `
+
+        <form>
+                    <div class="first-column">
+                        <label>Звідки</label>
+                        <select>${el.cities.name}</select>
+                        <label>Куди</label>
+                        <select>${el.countries.name}</select>
+                    </div>
+                    <div class="second-column">
+                        <label>Дата вильоту з... по...</label>
+                        <div>
+                            <input ${el.before}/>
+                            <input ${el.after}/>
+                        </div>-
+                        <div>
+                            <label>Категорія</label>
+                            <label>Харчування</label>
+                            <label>Валюта туру</label>
+    
+                        </div>
+                        <div>
+                            <select>${el.hotelClasses.name}</select>
+                            <select>${el.rAndBs.name}</select>
+                            <select>${el.currencies.code}</select>
+                        </div>
+    
+    
+    
+                    </div>
+                    <div class="third-column">
+                        <label>Ночей від... до...</label>
+                        <div>
+                            <input ${el.nightsMin}/>
+                            <input ${el.nightsMax}/>
+                        </div>
+                        <label>Ціна від... до...</label>
+                        <div>
+                            <input ${el.priceMin}/>
+                            <input ${el.priceMax}/>
+                        </div>
+                    </div>
+                    <div class="search-tours-button-position">
+                        <button class="search-tours-button" type="submit" href="#">Знайти</button>
+                    </div>
+                </form>
+    
+			`
+                search.insertAdjacentHTML('beforeend', html);
+            })
+        }, 1500)
+    </script>
+</body>
+
+</html>
